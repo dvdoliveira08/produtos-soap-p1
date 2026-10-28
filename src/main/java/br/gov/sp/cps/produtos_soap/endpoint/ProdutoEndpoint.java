@@ -2,6 +2,7 @@ package br.gov.sp.cps.produtos_soap.endpoint;
 
 import br.gov.sp.cps.produtos_soap.model.ConsultarProdutoRequest;
 import br.gov.sp.cps.produtos_soap.model.ConsultarProdutoResponse;
+import br.gov.sp.cps.produtos_soap.exception.ProdutoNaoEncontradoException;
 
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
@@ -50,10 +51,8 @@ public class ProdutoEndpoint {
             response.setQuantidadeEstoque(55);
 
         } else {
-            response.setNome("Produto não encontrado");
-            response.setDescricao("-");
-            response.setMarca("-");
-            response.setQuantidadeEstoque(0);
+            
+            throw new ProdutoNaoEncontradoException("O código de produto " + request.getCodigo() + " não foi encontrado no estoque.");
         }
 
         return response;
